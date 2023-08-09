@@ -4,7 +4,7 @@ Specializations > Interview Preparation > Algorithms
 ---
 
 ### Project author
-Alexa Orrico (source project by Alexandre Gautier)
+Bayo Herbert (source project by Alexandre Gautier)
 
 ### Assignment dates
 04-05-2021 to 04-09-2021
