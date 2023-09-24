@@ -1,40 +1,47 @@
-# (498) 0x00-lockboxes
-Specializations > Interview Preparation > Algorithms
+<p>
+<img width="260" height="170" src="https://image.flaticon.com/icons/svg/679/679922.svg" align="right" >
+</p>
 
----
+# 0x00. Lockboxes
 
-### Project author
-Bayo Herbert
+- Write a function in C that inserts a number into a sorted singly linked list.
+- Prototype: listint_t \*insert_node(listint_t \*\*head, int number);
+- Return: the address of the new node, or NULL if it failed
 
-### Assignment dates
-6-7-2023
+## Prerequisites
 
-### Description
-Practice interview question not appearing elsewhere in the curriculum. Logic puzzle matching Python lists with their contents.
+- Allowed editors: vi, vim, emacs
+- All your files will be interpreted/compiled on Ubuntu 14.04 LTS using python3 (version 3.4.3)
+- All your files should end with a new line
+- The first line of all your files should be exactly #!/usr/bin/python3
+- A README.md file, at the root of the folder of the project, is mandatory
+- Your code should use the PEP 8 style (version 1.7.x)
+- All your files must be executable
 
-### Provided file(s)
-* [`main_0.py`](./main_0.py)
+## Built With
 
----
+- Emacs
+- Ubuntu 14.04 LTS
 
-## Mandatory Tasks
+#### Compile
 
-### :white_check_mark: 0. Lockboxes
-You have n number of locked boxes in front of you. Each box is numbered sequentially from 0 to n - 1 and each box may contain keys to the other boxes.
+    `gcc 4.8.4 -Wall -Werror -Wextra and -pedantic`
 
-Write a method that determines if all the boxes can be opened.
+## Contributing
 
-* Prototype: `def canUnlockAll(boxes)`
-* `boxes` is a list of lists
-* A key with the same number as a box opens that box
-* You can assume all keys will be positive integers
-    * There can be keys that do not have boxes
-* The first box `boxes[0]` is unlocked
-* Return `True` if all boxes can be opened, else return `False`
+--Bayo Herbert <br> - Alx - Holberton Student
 
-File(s): [`0-lockboxes.py`](./0-lockboxes.py)
+## Versioning
 
----
+For my learning of Interviews in Holberton School
 
-## Student
-* **Samuel Pomeroy** - [allelomorph](github.com/allelomorph)
+## Authors
+
+---Santiago Yanguas 946@holbertonshcool.com
+
+## Files
+
+| File               | Description                         |
+| ------------------ | ----------------------------------- |
+| **0-lockboxes.py** | Resolve with a function             |
+| **main_0.py**      | Main if all the boxes can be opened |
