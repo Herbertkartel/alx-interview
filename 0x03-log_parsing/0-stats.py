@@ -1,90 +1,71 @@
 #!/usr/bin/python3
-"""
-0x06. Log Parsing, task 0. Log parsing
-
-Parses a log of HTTP GET request results from stdin to tabulate the total
-counts of status codes appearing in each response, and the total file size
-across all requests.
-
-Example of expected log line input:
-128.230.61.246 - [2017-02-05 23:31:23.258076] \
-"GET /projects/260 HTTP/1.1" 301 292
-
-Fields:
-<IP Address> - [<date>] "<GET request>" <response status code> <file size>
-"""
+""" This is my problem :'v """
+import sys
+import re
+import signal
+from collections import OrderedDict
 
 
-def print_log_totals(total_file_size, code_counts):
-    """
-    Prints current totals of file size and status code counts.
+def search_items(line, s):
+    """ Search the items to positionate """
+    regexu = r"\s\d{3}\s\d{1,}"
+    txt = re.search(regexu, line)
+    word = txt.group()
+    word = word[1:]
 
-    Args:
-        total_file_size (int): cumulative total of bytes received through
-            GET requests in log
-        code_counts (OrderedDict): totals of status codes from repsonses
-    """
-    print("File size: {}".format(total_file_size))
-    for code in code_counts:
-        if code_counts[code] > 0:
-            print("{}: {}".format(code, code_counts[code]))
+    regexd = r"\d{3}\s"
+    left = re.search(regexd, word)
+
+    code = left.group()
+    code = code[:-1]
+
+    regext = r"\s\d{1,}"
+    right = re.search(regext, word)
+
+    size = right.group()
+    size = size[1:]
+    size = int(size)
+
+    add_code(code, s)
+
+    return size
 
 
-if __name__ == '__main__':
-    from sys import argv, stdin, stderr
-    from collections import OrderedDict
-    from datetime import datetime
+def add_code(code, codes):
+    """ Count the status code """
+    try:
+        codes[code] += 1
+    except KeyError:
+        pass
 
-    line_no = 0
-    total_file_size = 0
-    code_counts = OrderedDict.fromkeys([200, 301, 400, 401, 403,
-                                        404, 405, 500], 0)
+
+def print_all(stat):
+    """ Print all """
+    stat = OrderedDict(stat)
+
+    for key, value in stat.items():
+        if value is not 0:
+            print("{}: {}".format(key, value))
+
+
+if __name__ == "__main__":
+    status = {"200": 0, "301": 0, "400": 0, "401": 0,
+              "403": 0, "404": 0, "405": 0, "500": 0}
+    file_size = 0
+    i = 0
 
     try:
-        for line in stdin:
-            line_no += 1
+        for lines in sys.stdin:
+            file_size += search_items(lines, status)
 
-            # both ip addresses/URLs allowed, but some lines may be raw text
-            a = line.split('-', 1)
-            if len(a) != 2:
-                # likely not a formatted line
-                continue
+            if i is not 0 and i % 9 == 0:
+                print("File size: {:d}".format(file_size))
+                print_all(status)
 
-            # checking timestamp
-            b = a[1].split(']')
-            timecode = b[0].lstrip(' [')
-            try:
-                datetime.strptime(timecode, '%Y-%m-%d %H:%M:%S.%f')
-            except:
-                stderr.write("{}: {}: invalid timecode\n".format(
-                    argv[0], line_no))
-                pass
-
-            # checking URL
-            c = b[1].split('"')
-            c = c[1:]
-            if c[0] != 'GET /projects/260 HTTP/1.1':
-                stderr.write("{}: {}: unexpected HTTP request\n".format(
-                    argv[0], line_no))
-
-            # prep for status code and file size
-            d = c[1].lstrip(' ')
-            d = d.rstrip('\n')
-            d = d.split(' ')
-
-            # checking status code (invalid codes skipped without error)
-            if d[0].isdecimal():
-                code = int(d[0])
-                code_counts[code] += 1
-
-            # checking file size (invalid sizes skipped without error)
-            if d[1].isdecimal():
-                total_file_size += int(d[1])
-
-            if line_no % 10 == 0:
-                print_log_totals(total_file_size, code_counts)
-        print_log_totals(total_file_size, code_counts)
-
-    except (KeyboardInterrupt):
-        print_log_totals(total_file_size, code_counts)
-        raise
+            i += 1
+    except KeyboardInterrupt:
+        pass
+    finally:
+        print("File size: {:d}".format(file_size))
+        print_all(status)
+        sys.exit(0)
